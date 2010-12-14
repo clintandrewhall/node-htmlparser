@@ -39,11 +39,10 @@ function StringTagFind(data, offset) {
 }
 
 function NestTags(elements) {
-  var nested = [],
+  var nested = [], tagStack = [],
     idxEnd = elements.length,
     idx = 0,
-    element, baseName, pos,
-    tagStack = [];
+    element, baseName, pos;
 
   tagStack.last = function last() {
     return(this.length ? this[this.length - 1] : null);
@@ -71,8 +70,7 @@ function NestTags(elements) {
           baseName = element.name.substring(1);
           if(!emptyTags[baseName]) {
             pos = tagStack.length - 1;
-            while(pos > -1 && tagStack[pos--].name != baseName) {
-            }
+            while(pos > -1 && tagStack[pos--].name != baseName) { }
             if(pos > -1 || tagStack[0].name == baseName) {
               while(pos < tagStack.length - 1) {
                 tagStack.pop();
@@ -308,10 +306,8 @@ function ParseTags(data) {
   return(elements);
 }
 
-if(typeof(exports) !== 'undefined') {
-  exports.ParseHtml = function ParseHtml(data) {
-    return(NestTags(ParseTagAttribs(ParseTags(data))));
-  };
+exports.ParseHtml = function ParseHtml(data) {
+  return(NestTags(ParseTagAttribs(ParseTags(data))));
+};
 
-  exports.ElementType = ElementType;
-}
+exports.ElementType = ElementType;
